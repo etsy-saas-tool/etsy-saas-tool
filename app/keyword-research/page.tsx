@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "@/components/Toaster";
 
 
 export default function KeywordResearch(){
@@ -21,7 +22,7 @@ async function analyzeKeyword(){
 
 if(!keyword){
 
-alert("Enter keyword");
+toast("Enter keyword", "error");
 
 return;
 
@@ -89,7 +90,7 @@ setResult(data);
 }catch(error:any){
 
 
-alert(error.message);
+toast(error.message, "error");
 
 
 

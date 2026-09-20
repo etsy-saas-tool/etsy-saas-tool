@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from "@/components/Toaster";
 
 
 export default function EditListing(){
@@ -41,7 +42,7 @@ const user = userData.user;
 
 if(!user){
 
-alert("Please login first");
+toast("Please login first", "error");
 return;
 
 }
@@ -119,9 +120,7 @@ catch(error:any){
 
 console.log(error);
 
-alert(
-error.message
-);
+toast(error.message, "error");
 
 
 }
@@ -190,9 +189,7 @@ throw error;
 
 
 
-alert(
-"Listing Updated Successfully ✅"
-);
+toast("Listing Updated Successfully ✅", "success");
 
 
 
@@ -208,9 +205,7 @@ router.push(
 catch(error:any){
 
 
-alert(
-error.message
-);
+toast(error.message, "error");
 
 
 }

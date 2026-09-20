@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { toast } from "@/components/Toaster";
 
 
 export default function MyListings(){
@@ -93,7 +94,7 @@ catch(error:any){
 
 console.log(error);
 
-alert(error.message);
+toast(error.message, "error");
 
 }
 
@@ -148,7 +149,7 @@ id
 
 if(error){
 
-alert(error.message);
+toast(error.message, "error");
 
 return;
 
@@ -175,7 +176,7 @@ function copyText(text:string){
 
 navigator.clipboard.writeText(text);
 
-alert("Copied ✅");
+toast("Copied ✅", "success");
 
 
 }

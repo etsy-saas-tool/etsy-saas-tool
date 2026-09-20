@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { toast } from "@/components/Toaster";
 
 
 export default function Generator(){
@@ -92,7 +93,7 @@ async function generate(){
 
 if(!product){
 
-alert("Please enter product name");
+toast("Please enter product name", "error");
 
 return;
 
@@ -102,7 +103,7 @@ return;
 
 if(credits <= 0){
 
-alert("No AI credits remaining");
+toast("No AI credits remaining", "error");
 
 return;
 
@@ -174,7 +175,7 @@ setCredits(prev=>Math.max(prev-1,0));
 
 catch(error:any){
 
-alert(error.message);
+toast(error.message, "error");
 
 }
 
@@ -218,7 +219,7 @@ const user=userData.user;
 
 if(!user){
 
-alert("Please login first");
+toast("Please login first", "error");
 
 return;
 
@@ -274,7 +275,7 @@ throw error;
 
 
 
-alert("Listing Saved Successfully ✅");
+toast("Listing Saved Successfully ✅", "success");
 
 
 
@@ -294,7 +295,7 @@ setAudience("");
 
 catch(error:any){
 
-alert(error.message);
+toast(error.message, "error");
 
 }
 
@@ -319,7 +320,7 @@ function copyText(text:string){
 
 navigator.clipboard.writeText(text);
 
-alert("Copied ✅");
+toast("Copied ✅", "success");
 
 
 }

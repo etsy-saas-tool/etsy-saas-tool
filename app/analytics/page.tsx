@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { toast } from "@/components/Toaster";
 
 
 export default function AnalyticsPage() {
@@ -84,7 +85,7 @@ catch(error:any){
 
 console.log(error);
 
-alert(error.message);
+toast(error.message, "error");
 
 
 }
@@ -210,62 +211,6 @@ Number(a.score || 0)
 
 
 
-// REVENUE ESTIMATE
-
-
-const revenuePotential = listings.reduce(
-
-(total,item)=>{
-
-
-const score = Number(item.score || 0);
-
-
-if(score >= 90){
-
-return total + 399;
-
-}
-
-
-if(score >= 75){
-
-return total + 199;
-
-}
-
-
-return total + 49;
-
-
-},
-
-0
-
-);
-
-
-
-
-
-
-// MONTHLY GOAL
-
-
-const growthProgress = Math.min(
-
-Math.round(
-
-(revenuePotential / 5000) * 100
-
-),
-
-100
-
-);
-
-
-
 
 
 
@@ -384,7 +329,7 @@ AI powered Etsy growth intelligence dashboard
 
 <div className="
 grid
-md:grid-cols-4
+md:grid-cols-3
 gap-6
 ">
 
@@ -501,37 +446,6 @@ mt-4
 
 
 
-<div className="
-bg-[#151522]
-border
-border-white/10
-rounded-3xl
-p-7
-">
-
-
-<p className="
-text-gray-400
-">
-
-Revenue Potential
-
-</p>
-
-
-<h2 className="
-text-5xl
-font-bold
-text-blue-400
-mt-4
-">
-
-${revenuePotential}
-
-</h2>
-
-
-</div>
 
 
 
@@ -1060,133 +974,6 @@ You currently have {strongProducts} strong potential listings and {improveProduc
 
 
 
-{/* MONTHLY GOAL TRACKER */}
-
-
-
-<div className="
-mt-10
-bg-[#151522]
-border
-border-white/10
-rounded-3xl
-p-8
-">
-
-
-
-<div className="
-flex
-justify-between
-items-center
-mb-5
-">
-
-
-<h2 className="
-text-2xl
-font-bold
-">
-
-Monthly Growth Goal 🚀
-
-</h2>
-
-
-
-<span className="
-text-purple-400
-font-bold
-">
-
-$5000/month
-
-</span>
-
-
-
-</div>
-
-
-
-
-
-
-<div className="
-w-full
-bg-black/30
-rounded-full
-h-5
-">
-
-
-<div
-
-className="
-bg-purple-600
-h-5
-rounded-full
-"
-
-style={{
-
-width:`${growthProgress}%`
-
-}}
-
->
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="
-flex
-justify-between
-mt-4
-text-gray-400
-">
-
-
-<span>
-
-Current Potential
-
-</span>
-
-
-<span>
-
-${revenuePotential}
-
-</span>
-
-
-</div>
-
-
-
-
-
-<p className="
-text-gray-400
-mt-4
-">
-
-Progress towards $5000/month goal: {growthProgress}%
-
-</p>
-
-
-
-</div>
 
 
 

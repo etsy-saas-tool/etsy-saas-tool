@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function Home() {
 
   return (
@@ -29,45 +27,34 @@ export default function Home() {
             Features
           </a>
 
-          <Link href="/pricing">
+          <a href="/pricing">
             Pricing
-          </Link>
+          </a>
 
           <a href="#faq">
-            FAQ
+            Resources
           </a>
 
         </div>
 
 
 
-        <div className="flex items-center gap-5">
 
-          <Link
-            href="/login"
-            className="text-gray-300 hover:text-white"
-          >
-            Login
-          </Link>
+        <a
 
-          <Link
+        href="/generator"
 
-          href="/generator"
+        className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold"
 
-          className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold"
+        >
 
-          >
+          Get Started
 
-            Get Started
-
-          </Link>
-
-        </div>
+        </a>
 
 
 
       </nav>
-
 
 
 
@@ -144,7 +131,7 @@ export default function Home() {
           <div className="flex gap-4 mt-10">
 
 
-            <Link
+            <a
 
             href="/generator"
 
@@ -154,7 +141,7 @@ export default function Home() {
 
               Start Creating Free
 
-            </Link>
+            </a>
 
 
 
@@ -290,7 +277,7 @@ export default function Home() {
 
 
 
-      {/* Trust Section - real Etsy facts, not made-up numbers */}
+      {/* Trust Section */}
 
 
       <section className="max-w-5xl mx-auto mt-32 px-8 grid md:grid-cols-3 gap-8 text-center">
@@ -302,14 +289,14 @@ export default function Home() {
 
           <h2 className="text-4xl font-bold text-purple-400">
 
-            13
+            10K+
 
           </h2>
 
 
           <p className="text-gray-400 mt-2">
 
-            Etsy tags generated per listing
+            Listings Generated
 
           </p>
 
@@ -325,14 +312,14 @@ export default function Home() {
 
           <h2 className="text-4xl font-bold text-purple-400">
 
-            140
+            5K+
 
           </h2>
 
 
           <p className="text-gray-400 mt-2">
 
-            Character title limit, handled for you
+            Etsy Sellers
 
           </p>
 
@@ -348,14 +335,14 @@ export default function Home() {
 
           <h2 className="text-4xl font-bold text-purple-400">
 
-            Seconds
+            24/7
 
           </h2>
 
 
           <p className="text-gray-400 mt-2">
 
-            To go from idea to full listing
+            AI Support
 
           </p>
 
@@ -456,7 +443,7 @@ export default function Home() {
             {/* Features Section */}
 
 
-      <section
+      <section 
       id="features"
       className="max-w-6xl mx-auto mt-32 px-8"
       >
@@ -772,6 +759,7 @@ export default function Home() {
 
 
 
+
           <div className="mt-8">
 
 
@@ -790,6 +778,7 @@ export default function Home() {
 
 
           </div>
+
 
 
 
@@ -915,33 +904,22 @@ export default function Home() {
       </section>
             {/* Pricing CTA */}
 
-      <section id="pricing-summary" className="max-w-5xl mx-auto mt-32 px-8 text-center">
+      <section className="max-w-5xl mx-auto mt-32 px-8 text-center">
 
         <h2 className="text-4xl font-bold">
           Start Creating Better Etsy Listings Today
         </h2>
 
         <p className="text-gray-400 mt-5">
-          Free plan includes 5 AI credits, no card required. Upgrade any time for more credits and advanced features.
+          Generate SEO optimized listings faster with AI.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
-
-          <Link
-            href="/generator"
-            className="inline-block bg-purple-600 hover:bg-purple-700 px-10 py-4 rounded-xl font-bold"
-          >
-            Start Free
-          </Link>
-
-          <Link
-            href="/pricing"
-            className="inline-block border border-white/20 px-10 py-4 rounded-xl font-bold"
-          >
-            See Pricing
-          </Link>
-
-        </div>
+        <a
+          href="/generator"
+          className="inline-block mt-8 bg-purple-600 px-10 py-4 rounded-xl font-bold"
+        >
+          Start Free
+        </a>
 
       </section>
 
@@ -971,7 +949,7 @@ export default function Home() {
             </h3>
 
             <p className="text-gray-400 mt-3">
-              EtsyAI helps sellers create optimized Etsy titles, tags and descriptions using AI, following Etsy&apos;s own listing rules (140 character titles, 13 tags).
+              EtsyAI helps sellers create optimized Etsy listings using AI.
             </p>
 
           </div>
@@ -986,40 +964,11 @@ export default function Home() {
             </h3>
 
             <p className="text-gray-400 mt-3">
-              Yes. Enter a few details about your product and AI writes a ready-to-edit listing for you.
+              Yes, beginners can create professional listings easily.
             </p>
 
           </div>
 
-
-
-
-          <div className="bg-white/5 p-6 rounded-xl">
-
-            <h3 className="font-bold">
-              Will this guarantee more sales?
-            </h3>
-
-            <p className="text-gray-400 mt-3">
-              No tool can promise sales. EtsyAI saves you research time and helps you write clearer, keyword-focused listings — results still depend on your product, photos, pricing and shop.
-            </p>
-
-          </div>
-
-
-
-
-          <div className="bg-white/5 p-6 rounded-xl">
-
-            <h3 className="font-bold">
-              Is EtsyAI connected to Etsy?
-            </h3>
-
-            <p className="text-gray-400 mt-3">
-              No. EtsyAI is an independent tool and is not affiliated with Etsy, Inc. You copy your generated listing and publish it on Etsy yourself.
-            </p>
-
-          </div>
 
 
         </div>
@@ -1034,17 +983,18 @@ export default function Home() {
 
       {/* Footer */}
 
-      <footer className="border-t border-white/10 py-8 px-8 text-center text-gray-400">
+      <footer className="border-t border-white/10 py-10 text-center text-gray-400">
 
-        <p>
-          EtsyAI © 2026
-          <br />
-          Built for Etsy sellers
-        </p>
+        <div className="flex flex-wrap justify-center gap-6 text-sm mb-5">
+          <a href="/terms" className="hover:text-white">Terms of Service</a>
+          <a href="/privacy" className="hover:text-white">Privacy Policy</a>
+          <a href="/refund-policy" className="hover:text-white">Refund Policy</a>
+          <a href="/contact" className="hover:text-white">Contact</a>
+        </div>
 
-        <p className="mt-3 text-sm text-gray-500">
-          EtsyAI is an independent tool and is not affiliated with, endorsed by, or sponsored by Etsy, Inc.
-        </p>
+        EtsyAI © 2026
+        <br />
+        Built for Etsy sellers
 
       </footer>
 

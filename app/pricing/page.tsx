@@ -239,6 +239,11 @@ export default function Pricing(){
           user_id: user.id,
           plan: planId,
         },
+        settings: {
+          displayMode: "overlay",
+          variant: "one-page",
+          successUrl: `${window.location.origin}/welcome`,
+        },
       });
 
 

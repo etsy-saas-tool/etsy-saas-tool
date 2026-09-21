@@ -18,10 +18,10 @@ export default function ContactPage() {
         </p>
 
         <a
-          href="mailto:umairmagsi16@gmail.com"
+          href="mailto:121472muhammadarslan@gmail.com"
           className="inline-block mt-8 bg-purple-600 hover:bg-purple-700 px-8 py-4 rounded-xl font-bold"
         >
-          umairmagsi16@gmail.com
+          121472muhammadarslan@gmail.com
         </a>
 
         <div className="mt-8">

@@ -136,8 +136,8 @@ export default function TermsPage() {
             <h2 className="text-xl font-bold text-white">11. Contact</h2>
             <p className="mt-3">
               Questions about these Terms? Reach us at{" "}
-              <a href="mailto:umairmagsi16@gmail.com" className="text-purple-400 underline">
-                umairmagsi16@gmail.com
+              <a href="mailto:121472muhammadarslan@gmail.com" className="text-purple-400 underline">
+                121472muhammadarslan@gmail.com
               </a>
               .
             </p>

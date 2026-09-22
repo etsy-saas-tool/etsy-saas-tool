@@ -38,6 +38,22 @@ setLoading(true);
 
 
 const {
+  data: userData
+} = await supabase.auth.getUser();
+
+const user = userData.user;
+
+if(!user){
+
+  setListing(null);
+
+  return;
+
+}
+
+
+
+const {
 
 data,
 
@@ -53,6 +69,11 @@ error
 .eq(
 "id",
 id
+)
+
+.eq(
+"user_id",
+user.id
 )
 
 .single();

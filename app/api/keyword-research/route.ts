@@ -15,29 +15,25 @@ export async function POST(req: Request) {
 
   try {
 
-    // Require login - this call is not free to run (it spends your
-    // Gemini quota), so it should never be reachable while logged out.
+
+    // Keyword research is a Pro-only feature (see app/pricing/page.tsx),
+    // so this must be checked here on the server - the page itself
+    // doesn't gate access, and browser-side checks are never enough
+    // because someone can just call this endpoint directly.
     const supabase = await createClient();
 
-    const {
-      data: userData,
-      error: userError
-    } = await supabase.auth.getUser();
+    const { data: authData, error: authError } = await supabase.auth.getUser();
+    const user = authData.user;
 
-    if(userError || !userData.user){
+    if(authError || !user){
 
       return NextResponse.json(
-        { error: "Please log in to use keyword research" },
+        { error: "Please login first" },
         { status: 401 }
       );
 
     }
 
-    const user = userData.user;
-
-
-    // Keyword research is sold as a Pro-only feature on the pricing
-    // page - enforce that here, not just in the UI.
     const { data: profile } = await supabaseAdmin
       .from("user_profiles")
       .select("plan")
@@ -47,11 +43,13 @@ export async function POST(req: Request) {
     if(profile?.plan !== "pro"){
 
       return NextResponse.json(
-        { error: "Keyword research is a Pro feature. Please upgrade your plan." },
+        { error: "Keyword research is a Pro feature. Upgrade your plan to use it." },
         { status: 403 }
       );
 
     }
+
+
 
 
     const body = await req.json();
@@ -79,11 +77,13 @@ export async function POST(req: Request) {
 
 
 
+
     const model = genAI.getGenerativeModel({
 
       model:"gemini-3.6-flash"
 
     });
+
 
 
 
@@ -149,6 +149,7 @@ Give 2 practical improvements.
 
 
 
+
     const result = await model.generateContent(prompt);
 
 
@@ -164,13 +165,20 @@ Give 2 practical improvements.
 
 
 
+
+
     const data = JSON.parse(cleaned);
+
+
+
 
 
 
     // ==========================
     // SAVE KEYWORD SEARCH
     // ==========================
+    // We already confirmed above that `user` is logged in and on the
+    // Pro plan, so we can save straight away using that same user.
 
     const {
       error:saveError
@@ -214,7 +222,12 @@ Give 2 practical improvements.
 
 
 
+
+
+
     return NextResponse.json(data);
+
+
 
 
 

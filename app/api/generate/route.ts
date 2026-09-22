@@ -9,59 +9,59 @@ const genAI = new GoogleGenerativeAI(
 );
 
 
+
+
 export async function POST(req: Request){
 
 
 try{
 
 
-  // 1. Require a logged in user, identified from their session
-  // cookie - never from anything the request body claims.
-  const supabase = await createClient();
+// Every generation costs real money (Gemini API usage), so this must
+// be tied to a logged-in user with credits left - never trust the
+// browser to enforce this on its own. We check who is logged in via
+// the server-side Supabase client (reads the session cookie), then
+// look up + update their credits with the admin client (bypasses RLS,
+// safe here because we already know exactly who this request is for).
+const supabase = await createClient();
 
-  const {
-    data: userData,
-    error: userError
-  } = await supabase.auth.getUser();
+const { data: authData } = await supabase.auth.getUser();
+const user = authData.user;
 
-  if(userError || !userData.user){
+if(!user){
 
-    return NextResponse.json(
-      { error: "Please log in to generate a listing" },
-      { status: 401 }
-    );
+return NextResponse.json(
+  { error: "Please login first" },
+  { status: 401 }
+);
 
-  }
+}
 
-  const userId = userData.user.id;
+const { data: profile, error: profileError } = await supabaseAdmin
+  .from("user_profiles")
+  .select("credits")
+  .eq("id", user.id)
+  .single();
+
+if(profileError || !profile){
+
+return NextResponse.json(
+  { error: "Could not verify your account" },
+  { status: 500 }
+);
+
+}
+
+if((profile.credits ?? 0) <= 0){
+
+return NextResponse.json(
+  { error: "No AI credits remaining. Please upgrade your plan." },
+  { status: 403 }
+);
+
+}
 
 
-  // 2. Check credits server-side. The page also checks this before
-  // calling here, but that check alone can be skipped by calling
-  // this endpoint directly, so the real check has to live here too.
-  const { data: profile, error: profileError } = await supabaseAdmin
-    .from("user_profiles")
-    .select("credits")
-    .eq("id", userId)
-    .single();
-
-  if(profileError || !profile){
-
-    return NextResponse.json(
-      { error: "Could not verify your account" },
-      { status: 400 }
-    );
-
-  }
-
-  if((profile.credits ?? 0) <= 0){
-
-    return NextResponse.json(
-      { error: "No AI credits remaining. Please upgrade your plan." },
-      { status: 402 }
-    );
-
-  }
 
 
 const body = await req.json();
@@ -73,6 +73,9 @@ category,
 style,
 audience
 }=body;
+
+
+
 
 
 
@@ -93,7 +96,6 @@ status:400
 
 
 }
-
 
 
 
@@ -350,7 +352,6 @@ result.response.text();
 
 
 
-
 const cleaned =
 text
 .replace(/```json/g,"")
@@ -366,36 +367,21 @@ const data =
 JSON.parse(cleaned);
 
 
-  // 3. Enforce Etsy's real limits ourselves - never trust the model
-  // to have followed the prompt's rules exactly.
-  if(typeof data.title === "string" && data.title.length > 140){
-
-    data.title = data.title.slice(0,140).trim();
-
-  }
-
-  if(Array.isArray(data.tags)){
-
-    data.tags = data.tags
-      .filter((tag: unknown) => typeof tag === "string" && tag.trim().length > 0)
-      .map((tag: string) => tag.trim().slice(0,20))
-      .slice(0,13);
-
-  }
 
 
-  // 4. Only spend a credit once generation actually succeeded.
-  const { error: creditError } = await supabaseAdmin
-    .from("user_profiles")
-    .update({ credits: (profile.credits ?? 0) - 1 })
-    .eq("id", userId)
-    .gt("credits", 0);
+// Spend one credit now that generation actually succeeded. If this
+// update fails we still return the result (the Gemini cost already
+// happened) but we log it so it can be investigated.
+const { error: creditError } = await supabaseAdmin
+  .from("user_profiles")
+  .update({ credits: (profile.credits ?? 0) - 1 })
+  .eq("id", user.id);
 
-  if(creditError){
+if(creditError){
+  console.log("CREDIT DEDUCT ERROR:", creditError);
+}
 
-    console.log("CREDIT DEDUCTION ERROR:", creditError);
 
-  }
 
 
 return NextResponse.json(data);
@@ -403,22 +389,40 @@ return NextResponse.json(data);
 
 
 
-}
 
-catch(error:any){
+
+
+}catch(error:any){
+
+
+
+console.log(
+"GENERATOR ERROR:",
+error
+);
+
+
+
+
 
 return NextResponse.json(
+
 {
 error:
 error.message ||
 "AI generation failed"
 },
+
 {
 status:500
 }
-)
+
+);
+
+
 
 }
+
 
 
 }

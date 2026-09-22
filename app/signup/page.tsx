@@ -75,10 +75,15 @@ export default function SignupPage() {
 
 
 
-        // Create User Profile
-        // Note: the database now enforces plan="free" and credits=5
-        // for every new signup, regardless of what is sent here.
-
+        // Create User Profile.
+        // NOTE: if this Supabase project requires email confirmation,
+        // there is no active session yet at this point, so this insert
+        // can fail depending on RLS policies (a brand new, unconfirmed
+        // user has no way to prove who they are yet). We don't want to
+        // block/fail the whole signup just because of that - login()
+        // double-checks for a missing profile and creates it the moment
+        // this same user actually has a session (right after they
+        // confirm their email and log in for the first time).
         const { error:profileError } = await supabase
         .from("user_profiles")
         .insert({
@@ -97,19 +102,32 @@ export default function SignupPage() {
 
         if(profileError){
 
-          toast("Profile error: " + profileError.message, "error");
-          return;
+          console.log("SIGNUP PROFILE ERROR:", profileError);
 
         }
 
 
 
 
-        toast("Account created successfully!", "success");
+        if(data.session){
 
+          // Email confirmation is off for this project, so Supabase
+          // already logged them in - take them straight to the app.
+          toast("Account created successfully! Logging you in...", "success");
 
+          router.push("/dashboard");
 
-        router.push("/login");
+        }else{
+
+          // Email confirmation is required before they can log in.
+          toast(
+            "Account created! Please check your email to confirm, then log in.",
+            "success"
+          );
+
+          router.push("/login");
+
+        }
 
 
       }
@@ -120,7 +138,10 @@ export default function SignupPage() {
     }catch(error:any){
 
 
-      toast(error.message || "Signup failed", "error");
+      toast(
+        error.message || "Signup failed",
+        "error"
+      );
 
 
     }finally{

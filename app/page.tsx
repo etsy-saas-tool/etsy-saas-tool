@@ -289,14 +289,14 @@ export default function Home() {
 
           <h2 className="text-4xl font-bold text-purple-400">
 
-            10K+
+            AI-Powered
 
           </h2>
 
 
           <p className="text-gray-400 mt-2">
 
-            Listings Generated
+            Complete Listing Generation
 
           </p>
 
@@ -312,14 +312,14 @@ export default function Home() {
 
           <h2 className="text-4xl font-bold text-purple-400">
 
-            5K+
+            13 Tags
 
           </h2>
 
 
           <p className="text-gray-400 mt-2">
 
-            Etsy Sellers
+            Fully Optimized Every Time
 
           </p>
 
@@ -342,7 +342,7 @@ export default function Home() {
 
           <p className="text-gray-400 mt-2">
 
-            AI Support
+            Generate Listings Anytime
 
           </p>
 

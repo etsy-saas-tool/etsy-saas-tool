@@ -59,7 +59,50 @@ return;
 if(data.user){
 
 
-toast("Login successful", "success");
+// Self-healing: if the profile insert during signup couldn't run
+// (e.g. this project requires email confirmation, so there was no
+// session yet at signup time), make sure a working profile exists
+// now that we know for sure who this user is and they have a real
+// session. Without this, a confirmed user could be stuck with no
+// user_profiles row and no credits/plan at all.
+const { data:existingProfile } = await supabase
+
+.from("user_profiles")
+
+.select("id")
+
+.eq("id", data.user.id)
+
+.single();
+
+if(!existingProfile){
+
+const { error:createError } = await supabase
+
+.from("user_profiles")
+
+.insert({
+
+id: data.user.id,
+
+email: data.user.email,
+
+plan: "free",
+
+credits: 5
+
+});
+
+if(createError){
+
+console.log("LOGIN PROFILE SELF-HEAL ERROR:", createError);
+
+}
+
+}
+
+
+toast("Login successful ✅", "success");
 
 
 router.push("/dashboard");
@@ -174,7 +217,7 @@ loading
 
 <p className="text-gray-400 mt-6 text-center">
 
-Don&apos;t have an account?
+Don't have an account?
 
 <a
 

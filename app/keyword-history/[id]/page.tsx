@@ -27,6 +27,21 @@ async function getKeyword(){
 
 
 const {
+data:userData
+}= await supabase.auth.getUser();
+
+const user = userData.user;
+
+if(!user){
+
+setLoading(false);
+return;
+
+}
+
+
+
+const {
 data,
 error
 }= await supabase
@@ -38,6 +53,11 @@ error
 .eq(
 "id",
 id
+)
+
+.eq(
+"user_id",
+user.id
 )
 
 .single();

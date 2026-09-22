@@ -21,6 +21,7 @@ const [saving,setSaving] = useState(false);
 const [title,setTitle] = useState("");
 const [tags,setTags] = useState("");
 const [description,setDescription] = useState("");
+const [userId,setUserId] = useState("");
 
 
 
@@ -47,6 +48,8 @@ return;
 
 }
 
+
+setUserId(user.id);
 
 
 
@@ -153,6 +156,12 @@ try{
 setSaving(true);
 
 
+if(!userId){
+
+toast("Please login first", "error");
+return;
+
+}
 
 
 const {
@@ -175,6 +184,11 @@ description:description
 .eq(
 "id",
 id
+)
+
+.eq(
+"user_id",
+userId
 );
 
 

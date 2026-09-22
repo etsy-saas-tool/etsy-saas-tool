@@ -128,6 +128,22 @@ if(!confirmDelete) return;
 
 
 
+const {
+data:userData
+}=await supabase.auth.getUser();
+
+const user=userData.user;
+
+if(!user){
+
+toast("Please login first", "error");
+
+return;
+
+}
+
+
+
 
 const {
 error
@@ -141,6 +157,11 @@ error
 .eq(
 "id",
 id
+)
+
+.eq(
+"user_id",
+user.id
 );
 
 

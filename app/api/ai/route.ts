@@ -1,66 +1,14 @@
 import { NextResponse } from "next/server";
 
-
-export async function POST(req:Request){
-
-try{
-
-
-const body = await req.json();
-
-
-const {
-product,
-category,
-style,
-audience
-}=body;
-
-
-
-const result = {
-
-title:
-`${product} | Handmade ${style} Etsy Product for ${audience}`,
-
-tags:[
-"etsy gift",
-"handmade",
-"unique decor",
-"custom gift",
-"etsy shop",
-"creative product",
-"small business"
-],
-
-description:
-
-`Beautiful ${product} designed for ${audience}.
-Perfect for Etsy shoppers looking for handmade ${category}.
-This ${style} product makes a thoughtful gift and unique addition.`
-
-};
-
-
-
-return NextResponse.json(result);
-
-
-
-}
-
-catch(error){
-
-return NextResponse.json(
-{
-error:"Generation failed"
-},
-{
-status:500
-}
-)
-
-}
-
-
+// RETIRED - this was an early, unauthenticated leftover version of the
+// listing generator (it didn't even call the real AI model, and anyone
+// could call it with no login at all). The real, secured generator is
+// app/api/generate/route.ts. This file is kept only as an inert stub so
+// the route does nothing - safe to delete this whole "ai" folder
+// whenever convenient.
+export async function POST() {
+  return NextResponse.json(
+    { error: "This endpoint has been retired." },
+    { status: 410 }
+  );
 }

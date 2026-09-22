@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Etsy SEO & Listing Generator",
   description: "AI-powered tool to generate optimized Etsy titles, 13 tags, and descriptions instantly.",
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

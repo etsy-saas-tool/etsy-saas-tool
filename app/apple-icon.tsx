@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { loadGoogleFont } from "@/lib/og-font";
 
 // Next.js auto-detects this file and serves it as the "add to home
 // screen" icon on iOS/Safari - no manual config needed.
@@ -9,7 +10,9 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const fontData = await loadGoogleFont("Fraunces:ital,wght@1,600", "E");
+
   return new ImageResponse(
     (
       <div
@@ -19,25 +22,33 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "linear-gradient(135deg, #c084fc 0%, #9333ea 55%, #6d28d9 100%)",
+          background: "#7c3aed",
         }}
       >
-        <div
+        <span
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "center",
-            gap: 28,
+            fontFamily: "Fraunces",
+            fontStyle: "italic",
+            fontWeight: 600,
+            fontSize: 120,
+            color: "#fdf4ff",
+            lineHeight: 1,
           }}
         >
-          <div style={{ width: 100, height: 18, borderRadius: 9, background: "white" }} />
-          <div style={{ width: 66, height: 18, borderRadius: 9, background: "white" }} />
-          <div style={{ width: 100, height: 18, borderRadius: 9, background: "white" }} />
-        </div>
+          E
+        </span>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Fraunces",
+          data: fontData,
+          style: "italic",
+          weight: 600,
+        },
+      ],
+    }
   );
 }

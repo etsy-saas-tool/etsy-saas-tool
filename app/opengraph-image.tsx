@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { loadGoogleFont } from "@/lib/og-font";
 
 // Next.js auto-detects this file and uses it as the preview image when
 // your link is shared on WhatsApp, Facebook, LinkedIn, iMessage, etc.
@@ -10,7 +11,9 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const fontData = await loadGoogleFont("Fraunces:ital,wght@1,600", "E");
+
   return new ImageResponse(
     (
       <div
@@ -34,24 +37,22 @@ export default function OpengraphImage() {
             width: 120,
             height: 120,
             borderRadius: 28,
-            background:
-              "linear-gradient(135deg, #c084fc 0%, #9333ea 55%, #6d28d9 100%)",
+            background: "#7c3aed",
             marginBottom: 32,
           }}
         >
-          <div
+          <span
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              justifyContent: "center",
-              gap: 9,
+              fontFamily: "Fraunces",
+              fontStyle: "italic",
+              fontWeight: 600,
+              fontSize: 78,
+              color: "#fdf4ff",
+              lineHeight: 1,
             }}
           >
-            <div style={{ width: 34, height: 6, borderRadius: 3, background: "white" }} />
-            <div style={{ width: 22, height: 6, borderRadius: 3, background: "white" }} />
-            <div style={{ width: 34, height: 6, borderRadius: 3, background: "white" }} />
-          </div>
+            E
+          </span>
         </div>
         <div style={{ display: "flex", fontSize: 64, fontWeight: 700 }}>
           Etsy<span style={{ color: "#c084fc" }}>AI</span>
@@ -68,6 +69,16 @@ export default function OpengraphImage() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Fraunces",
+          data: fontData,
+          style: "italic",
+          weight: 600,
+        },
+      ],
+    }
   );
 }

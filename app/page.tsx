@@ -40,17 +40,33 @@ export default function Home() {
 
 
 
-        <a
+        <div className="flex items-center gap-5">
 
-        href="/generator"
+          <a
 
-        className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold"
+          href="/login"
 
-        >
+          className="text-gray-300 hover:text-white font-semibold"
 
-          Get Started
+          >
 
-        </a>
+            Login
+
+          </a>
+
+          <a
+
+          href="/generator"
+
+          className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold"
+
+          >
+
+            Get Started
+
+          </a>
+
+        </div>
 
 
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "@/components/Toaster";
 
 
@@ -12,6 +12,30 @@ const [keyword,setKeyword] = useState("");
 const [loading,setLoading] = useState(false);
 
 const [result,setResult] = useState<any>(null);
+
+const [cooldown,setCooldown] = useState(0);
+
+
+
+
+// Counts a short cooldown back down to 0 once it's set (see
+// analyzeKeyword()). While it's above 0, the button stays disabled -
+// this stops a quick burst of clicks from eating through the AI
+// provider's short-term free-plan request limit, which is shared
+// across every user of the site, not just this one.
+useEffect(()=>{
+
+if(cooldown<=0) return;
+
+const timer = setInterval(()=>{
+
+setCooldown(prev => prev>0 ? prev-1 : 0);
+
+},1000);
+
+return ()=>clearInterval(timer);
+
+},[cooldown]);
 
 
 
@@ -98,6 +122,8 @@ toast(error.message, "error");
 
 
 setLoading(false);
+
+setCooldown(8);
 
 
 }
@@ -193,11 +219,12 @@ p-4
 
 onClick={analyzeKeyword}
 
-disabled={loading}
+disabled={loading || cooldown>0}
 
 className="
 bg-purple-600
 hover:bg-purple-700
+disabled:opacity-50
 px-8
 rounded-xl
 font-bold
@@ -212,6 +239,14 @@ loading
 ?
 
 "Analyzing..."
+
+:
+
+cooldown>0
+
+?
+
+`Please wait ${cooldown}s`
 
 :
 

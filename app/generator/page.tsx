@@ -25,6 +25,8 @@ const [result,setResult] = useState<any>(null);
 
 const [credits,setCredits] = useState(0);
 
+const [cooldown,setCooldown] = useState(0);
+
 
 
 
@@ -101,6 +103,28 @@ useEffect(()=>{
 getCredits();
 
 },[]);
+
+
+
+
+// Counts a short cooldown back down to 0 once it's set (see generate()).
+// While it's above 0, both generate buttons stay disabled - this stops
+// a quick burst of clicks from eating through the AI provider's
+// short-term free-plan request limit, which is shared across every
+// user of the site, not just this one.
+useEffect(()=>{
+
+if(cooldown<=0) return;
+
+const timer = setInterval(()=>{
+
+setCooldown(prev => prev>0 ? prev-1 : 0);
+
+},1000);
+
+return ()=>clearInterval(timer);
+
+},[cooldown]);
 
 
 
@@ -204,6 +228,8 @@ toast(error.message, "error");
 finally{
 
 setLoading(false);
+
+setCooldown(8);
 
 }
 
@@ -631,12 +657,13 @@ p-4
 
 onClick={generate}
 
-disabled={loading}
+disabled={loading || cooldown>0}
 
 className="
 mt-8
 bg-purple-600
 hover:bg-purple-700
+disabled:opacity-50
 px-10
 py-4
 rounded-xl
@@ -653,6 +680,14 @@ loading
 ?
 
 "✨ Creating Listing..."
+
+:
+
+cooldown>0
+
+?
+
+`Please wait ${cooldown}s`
 
 :
 
@@ -1268,12 +1303,13 @@ saving
 
 onClick={generate}
 
-disabled={loading}
+disabled={loading || cooldown>0}
 
 className="
 bg-white/10
 border
 border-white/10
+disabled:opacity-50
 px-8
 py-4
 rounded-xl
@@ -1289,6 +1325,14 @@ loading
 ?
 
 "✨ Creating Listing..."
+
+:
+
+cooldown>0
+
+?
+
+`Please wait ${cooldown}s`
 
 :
 

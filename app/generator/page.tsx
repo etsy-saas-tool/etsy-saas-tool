@@ -1268,6 +1268,8 @@ saving
 
 onClick={generate}
 
+disabled={loading}
+
 className="
 bg-white/10
 border
@@ -1280,7 +1282,19 @@ font-bold
 
 >
 
-🔄 Generate Again
+{
+
+loading
+
+?
+
+"✨ Creating Listing..."
+
+:
+
+"🔄 Generate Again"
+
+}
 
 </button>
 

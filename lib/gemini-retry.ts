@@ -30,6 +30,24 @@ export async function generateWithRetry(
         error?.status === 503 ||
         /503|overloaded|unavailable|high demand/i.test(message);
 
+      const isQuotaExceeded =
+        error?.status === 429 ||
+        /429|quota|too many requests/i.test(message);
+
+      // A quota error means the free plan's short-term request limit was
+      // hit. Google's own message says to wait 30+ seconds before trying
+      // again - too long to sit and retry inside this request - so fail
+      // right away with a clear, friendly message instead of retrying
+      // (and instead of showing Google's raw technical error text to the
+      // user).
+      if (isQuotaExceeded) {
+
+        throw new Error(
+          "You've reached the free plan's short-term usage limit for AI generation. Please wait about a minute and try again."
+        );
+
+      }
+
       // Only retry when Google's own servers are overloaded. Any other
       // error (bad prompt, invalid API key, quota exceeded) will just
       // fail the exact same way again, so there's no point waiting and

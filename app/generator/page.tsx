@@ -534,6 +534,8 @@ value={product}
 
 onChange={(e)=>setProduct(e.target.value)}
 
+onKeyDown={(e)=>{ if(e.key==="Enter") generate(); }}
+
 className="
 bg-black/30
 border
@@ -555,6 +557,8 @@ placeholder="Category"
 value={category}
 
 onChange={(e)=>setCategory(e.target.value)}
+
+onKeyDown={(e)=>{ if(e.key==="Enter") generate(); }}
 
 className="
 bg-black/30
@@ -578,6 +582,8 @@ value={style}
 
 onChange={(e)=>setStyle(e.target.value)}
 
+onKeyDown={(e)=>{ if(e.key==="Enter") generate(); }}
+
 className="
 bg-black/30
 border
@@ -599,6 +605,8 @@ placeholder="Target Audience"
 value={audience}
 
 onChange={(e)=>setAudience(e.target.value)}
+
+onKeyDown={(e)=>{ if(e.key==="Enter") generate(); }}
 
 className="
 bg-black/30

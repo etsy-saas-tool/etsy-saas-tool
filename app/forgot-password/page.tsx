@@ -127,6 +127,8 @@ export default function ForgotPasswordPage() {
 
               onChange={(e) => setEmail(e.target.value)}
 
+              onKeyDown={(e) => { if(e.key === "Enter") sendResetLink(); }}
+
               className="w-full mt-8 p-4 rounded-xl bg-black/30 border border-white/10 outline-none"
 
               />

@@ -165,6 +165,8 @@ value={email}
 
 onChange={(e)=>setEmail(e.target.value)}
 
+onKeyDown={(e)=>{ if(e.key==="Enter") login(); }}
+
 />
 
 
@@ -182,6 +184,8 @@ type="password"
 value={password}
 
 onChange={(e)=>setPassword(e.target.value)}
+
+onKeyDown={(e)=>{ if(e.key==="Enter") login(); }}
 
 />
 

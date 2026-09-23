@@ -172,6 +172,8 @@ value={keyword}
 
 onChange={(e)=>setKeyword(e.target.value)}
 
+onKeyDown={(e)=>{ if(e.key==="Enter") analyzeKeyword(); }}
+
 placeholder="Example: crochet christmas ornament"
 
 className="

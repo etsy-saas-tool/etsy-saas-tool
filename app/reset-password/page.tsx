@@ -170,6 +170,8 @@ export default function ResetPasswordPage() {
 
               onChange={(e) => setPassword(e.target.value)}
 
+              onKeyDown={(e) => { if(e.key === "Enter") updatePassword(); }}
+
               className="w-full mt-8 p-4 rounded-xl bg-black/30 border border-white/10 outline-none"
 
               />
@@ -185,6 +187,8 @@ export default function ResetPasswordPage() {
               value={confirmPassword}
 
               onChange={(e) => setConfirmPassword(e.target.value)}
+
+              onKeyDown={(e) => { if(e.key === "Enter") updatePassword(); }}
 
               className="w-full mt-4 p-4 rounded-xl bg-black/30 border border-white/10 outline-none"
 

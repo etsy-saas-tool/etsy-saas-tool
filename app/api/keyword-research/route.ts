@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@/lib/supabase-server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { generateWithRetry } from "@/lib/gemini-retry";
 
 
 const genAI = new GoogleGenerativeAI(
@@ -150,7 +151,7 @@ Give 2 practical improvements.
 
 
 
-    const result = await model.generateContent(prompt);
+    const result = await generateWithRetry(model, prompt);
 
 
 

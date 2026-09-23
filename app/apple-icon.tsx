@@ -19,14 +19,16 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)",
-          color: "white",
-          fontSize: 96,
-          fontWeight: 700,
-          fontFamily: "sans-serif",
+          background:
+            "linear-gradient(135deg, #c084fc 0%, #9333ea 55%, #6d28d9 100%)",
         }}
       >
-        E
+        <svg width="104" height="104" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"
+            fill="white"
+          />
+        </svg>
       </div>
     ),
     { ...size }

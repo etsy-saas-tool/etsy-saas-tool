@@ -40,14 +40,45 @@ export default function BillingPage(){
 
       setEmail(user.email || "");
 
-      const { data:profile } = await supabase
+      const { data:profile, error:profileError } = await supabase
         .from("user_profiles")
         .select("plan, credits")
         .eq("id", user.id)
         .single();
 
-      setPlan(profile?.plan || "free");
-      setCredits(profile?.credits ?? 0);
+      if(profileError){
+
+        console.log("BILLING PROFILE ERROR:", profileError);
+
+        // Profile row missing for this account - create it now with
+        // the free plan's default credits instead of silently
+        // showing 0.
+        if(profileError.code === "PGRST116"){
+
+          const { error:createError } = await supabase
+            .from("user_profiles")
+            .insert({
+              id: user.id,
+              email: user.email,
+              plan: "free",
+              credits: 5
+            });
+
+          if(!createError){
+            setPlan("free");
+            setCredits(5);
+          }else{
+            console.log("BILLING PROFILE SELF-HEAL ERROR:", createError);
+          }
+
+        }
+
+      }else{
+
+        setPlan(profile?.plan || "free");
+        setCredits(profile?.credits ?? 0);
+
+      }
 
     }catch(error){
 

@@ -56,7 +56,29 @@ const {data,error}=await supabase
 
 if(error){
 
-console.log(error);
+console.log("GET CREDITS ERROR:", error);
+
+// Profile row missing for this account (e.g. the signup/login
+// self-heal never ran yet) - create it now with the free plan's
+// default credits instead of silently showing 0 forever.
+if(error.code === "PGRST116"){
+
+const {error:createError} = await supabase
+.from("user_profiles")
+.insert({
+id: user.id,
+email: user.email,
+plan: "free",
+credits: 5
+});
+
+if(!createError){
+setCredits(5);
+}else{
+console.log("GET CREDITS SELF-HEAL ERROR:", createError);
+}
+
+}
 
 return;
 

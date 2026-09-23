@@ -39,12 +39,19 @@ export default function OpengraphImage() {
             marginBottom: 32,
           }}
         >
-          <svg width="66" height="66" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"
-              fill="white"
-            />
-          </svg>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              gap: 9,
+            }}
+          >
+            <div style={{ width: 34, height: 6, borderRadius: 3, background: "white" }} />
+            <div style={{ width: 22, height: 6, borderRadius: 3, background: "white" }} />
+            <div style={{ width: 34, height: 6, borderRadius: 3, background: "white" }} />
+          </div>
         </div>
         <div style={{ display: "flex", fontSize: 64, fontWeight: 700 }}>
           Etsy<span style={{ color: "#c084fc" }}>AI</span>

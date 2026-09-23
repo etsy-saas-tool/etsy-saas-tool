@@ -23,12 +23,19 @@ export default function AppleIcon() {
             "linear-gradient(135deg, #c084fc 0%, #9333ea 55%, #6d28d9 100%)",
         }}
       >
-        <svg width="104" height="104" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"
-            fill="white"
-          />
-        </svg>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            gap: 28,
+          }}
+        >
+          <div style={{ width: 100, height: 18, borderRadius: 9, background: "white" }} />
+          <div style={{ width: 66, height: 18, borderRadius: 9, background: "white" }} />
+          <div style={{ width: 100, height: 18, borderRadius: 9, background: "white" }} />
+        </div>
       </div>
     ),
     { ...size }

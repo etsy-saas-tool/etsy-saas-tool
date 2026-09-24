@@ -34,27 +34,41 @@ export async function generateWithRetry(
         error?.status === 429 ||
         /429|quota|too many requests/i.test(message);
 
-      // A quota error means the free plan's short-term request limit was
-      // hit. Google's own message says to wait 30+ seconds before trying
-      // again - too long to sit and retry inside this request - so fail
-      // right away with a clear, friendly message instead of retrying
-      // (and instead of showing Google's raw technical error text to the
-      // user).
+      // A quota error means the free plan's DAILY request limit was hit
+      // (Google's own suggested "retry in 30s" text is misleading here -
+      // in practice this is a per-day cap, not a per-minute one, so
+      // retrying moments later just fails again). Nothing client-side
+      // can fix this today, so fail right away with a clear, accurate
+      // message instead of retrying (and instead of showing Google's
+      // raw technical error text to the user).
       if (isQuotaExceeded) {
 
         throw new Error(
-          "You've reached the free plan's short-term usage limit for AI generation. Please wait about a minute and try again."
+          "You've reached today's free-plan limit for AI generation. This resets once a day - please try again tomorrow, or upgrade your plan for higher limits."
         );
 
       }
 
-      // Only retry when Google's own servers are overloaded. Any other
-      // error (bad prompt, invalid API key, quota exceeded) will just
-      // fail the exact same way again, so there's no point waiting and
-      // retrying those - fail immediately instead.
-      if (!isOverloaded || attempt === maxRetries - 1) {
+      // Any error that isn't Google being overloaded (bad prompt,
+      // invalid API key, etc) will just fail the exact same way again,
+      // so there's no point waiting and retrying it - fail immediately
+      // instead, with the original error untouched.
+      if (!isOverloaded) {
 
         throw error;
+
+      }
+
+      // Overloaded, but we're out of retries. Google's flash models can
+      // stay overloaded for anywhere from a few seconds to (rarely)
+      // several hours, and there's nothing this code can do to speed
+      // that up - so fail with a clear, friendly message instead of
+      // Google's raw technical error text.
+      if (attempt === maxRetries - 1) {
+
+        throw new Error(
+          "Google's AI service is temporarily overloaded (high demand on their end, not a problem with your account). Please try again in a few minutes."
+        );
 
       }
 

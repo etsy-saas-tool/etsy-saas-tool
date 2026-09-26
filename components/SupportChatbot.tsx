@@ -109,7 +109,42 @@ const SUGGESTED = [
 ];
 
 const FALLBACK_ANSWER =
-  "I'm not totally sure about that one yet. Please email 121472muhammadarslan@gmail.com and a real person will help you directly.";
+  "Hmm, I'm not sure about that one. Try asking about credits, pricing, or your account — or email 121472muhammadarslan@gmail.com and a real person will help you directly.";
+
+// Casual replies (ok, thanks, hi, bye...) aren't real FAQ questions, so
+// without this they'd fall through to the "I don't know, email us"
+// answer, which feels broken in an ordinary back-and-forth chat. This
+// runs before FAQ matching and only fires on short messages, so a real
+// question that happens to contain "ok" still goes through findAnswer().
+function findSmallTalk(raw: string): string | null {
+  const words = raw
+    .toLowerCase()
+    .replace(/[^a-z\s]/g, "")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (words.length === 0 || words.length > 4) return null;
+
+  const has = (list: string[]) => words.some((w) => list.includes(w));
+
+  if (has(["thanks", "thank", "thankyou", "shukriya", "ty"])) {
+    return "You're welcome! 😊 Let me know if you have any other questions.";
+  }
+
+  if (has(["bye", "goodbye"])) {
+    return "Take care! Come back anytime you need help. 👋";
+  }
+
+  if (has(["hi", "hello", "hey", "salam", "assalam", "asalam"])) {
+    return "Hey there! 👋 Ask me anything about credits, pricing, or how EtsyAI works.";
+  }
+
+  if (has(["ok", "okay", "okk", "alright", "cool", "nice", "great", "perfect", "good"])) {
+    return "Great! Anything else I can help with? 😊";
+  }
+
+  return null;
+}
 
 function findAnswer(input: string): string {
   const text = input.toLowerCase();
@@ -159,7 +194,8 @@ export default function SupportChatbot() {
 
     // Small delay so the reply feels like a reply, not an instant swap.
     setTimeout(() => {
-      setMessages((prev) => [...prev, { role: "bot", text: findAnswer(question) }]);
+      const reply = findSmallTalk(question) ?? findAnswer(question);
+      setMessages((prev) => [...prev, { role: "bot", text: reply }]);
     }, 450);
   }
 

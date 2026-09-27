@@ -205,7 +205,7 @@ export default function SupportChatbot() {
         <div className="mb-4 w-[22rem] max-w-[calc(100vw-3rem)] h-[32rem] max-h-[70vh] bg-[#151522] border border-white/10 rounded-3xl flex flex-col overflow-hidden shadow-2xl">
           <div className="bg-purple-600 px-5 py-4 flex items-center justify-between">
             <div>
-              <p className="font-bold text-white">Lisa 🤖</p>
+              <p className="font-bold text-white">Lisa</p>
               <p className="text-purple-200 text-xs">EtsyAI Support · Usually replies instantly</p>
             </div>
 

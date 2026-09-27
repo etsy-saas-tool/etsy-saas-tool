@@ -176,7 +176,7 @@ export default function SupportChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "bot",
-      text: "Hi! 👋 I'm the EtsyAI support bot, here 24/7. Ask me anything about credits, pricing, or how the tool works — or tap a question below.",
+      text: "Hi! 👋 I'm Lisa, your EtsyAI support assistant, here 24/7. Ask me anything about credits, pricing, or how the tool works — or tap a question below.",
     },
   ]);
 
@@ -205,8 +205,8 @@ export default function SupportChatbot() {
         <div className="mb-4 w-[22rem] max-w-[calc(100vw-3rem)] h-[32rem] max-h-[70vh] bg-[#151522] border border-white/10 rounded-3xl flex flex-col overflow-hidden shadow-2xl">
           <div className="bg-purple-600 px-5 py-4 flex items-center justify-between">
             <div>
-              <p className="font-bold text-white">EtsyAI Support 🤖</p>
-              <p className="text-purple-200 text-xs">Usually replies instantly · 24/7</p>
+              <p className="font-bold text-white">Lisa 🤖</p>
+              <p className="text-purple-200 text-xs">EtsyAI Support · Usually replies instantly</p>
             </div>
 
             <button
@@ -272,7 +272,7 @@ export default function SupportChatbot() {
       <button
         onClick={() => setOpen((v) => !v)}
         className="w-16 h-16 rounded-full bg-purple-600 hover:bg-purple-700 shadow-2xl flex items-center justify-center text-2xl"
-        aria-label="Open support chat"
+        aria-label="Chat with Lisa"
       >
         {open ? "×" : "💬"}
       </button>

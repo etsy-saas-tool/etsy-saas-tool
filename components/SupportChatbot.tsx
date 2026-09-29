@@ -200,7 +200,7 @@ export default function SupportChatbot() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {open && (
         <div className="mb-4 w-[22rem] max-w-[calc(100vw-3rem)] h-[32rem] max-h-[70vh] bg-[#151522] border border-white/10 rounded-3xl flex flex-col overflow-hidden shadow-2xl">
           <div className="bg-purple-600 px-5 py-4 flex items-center justify-between">

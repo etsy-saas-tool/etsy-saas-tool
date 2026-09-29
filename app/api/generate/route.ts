@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@/lib/supabase-server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { generateWithRetry } from "@/lib/gemini-retry";
+import { sendEmail, lowCreditsEmailHtml } from "@/lib/email";
 
 
 const genAI = new GoogleGenerativeAI(
@@ -373,13 +374,26 @@ JSON.parse(cleaned);
 // Spend one credit now that generation actually succeeded. If this
 // update fails we still return the result (the Gemini cost already
 // happened) but we log it so it can be investigated.
+const newCredits = (profile.credits ?? 0) - 1;
+
 const { error: creditError } = await supabaseAdmin
   .from("user_profiles")
-  .update({ credits: (profile.credits ?? 0) - 1 })
+  .update({ credits: newCredits })
   .eq("id", user.id);
 
 if(creditError){
   console.log("CREDIT DEDUCT ERROR:", creditError);
+}
+
+// Heads-up right before they run out, so upgrading is a choice they
+// get to make instead of a wall they hit mid-task. Fire-and-forget -
+// an email hiccup here must never affect the actual response below.
+if (newCredits === 1 && user.email) {
+  sendEmail({
+    to: user.email,
+    subject: "You're almost out of AI credits",
+    html: lowCreditsEmailHtml(),
+  }).catch(() => {});
 }
 
 

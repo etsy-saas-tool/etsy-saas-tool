@@ -5,6 +5,38 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/Toaster";
 
+// A short blocklist of common disposable/temp-mail domains. This is a
+// speed bump, not a wall - it stops the casual "grab another 5 free
+// credits" case (typing a throwaway address into the form) without
+// needing any new service or account. Someone determined can still
+// get around it; that's an acceptable tradeoff for a free tier this
+// small.
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  "mailinator.com",
+  "guerrillamail.com",
+  "10minutemail.com",
+  "10minutemail.net",
+  "tempmail.com",
+  "temp-mail.org",
+  "throwawaymail.com",
+  "yopmail.com",
+  "trashmail.com",
+  "getnada.com",
+  "fakeinbox.com",
+  "sharklasers.com",
+  "dispostable.com",
+  "maildrop.cc",
+  "mintemail.com",
+  "mailnesia.com",
+  "emailondeck.com",
+  "moakt.com",
+]);
+
+function isDisposableEmail(email: string): boolean {
+  const domain = email.split("@")[1]?.toLowerCase().trim();
+  return !!domain && DISPOSABLE_EMAIL_DOMAINS.has(domain);
+}
+
 
 export default function SignupPage() {
 
@@ -40,6 +72,13 @@ export default function SignupPage() {
 
     }
 
+
+    if (isDisposableEmail(cleanEmail)) {
+
+      toast("Please use a permanent email address to sign up", "error");
+      return;
+
+    }
 
 
     try {
@@ -105,6 +144,16 @@ export default function SignupPage() {
           console.log("SIGNUP PROFILE ERROR:", profileError);
 
         }
+
+
+        // Best-effort welcome email - fire and forget. This must never
+        // block or fail the signup flow itself, so we deliberately
+        // don't await/throw on it.
+        fetch("/api/send-welcome-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: data.user.email }),
+        }).catch(() => {});
 
 
 
